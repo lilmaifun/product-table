@@ -49,7 +49,7 @@ function ProductTable({ products, filterText, inStockOnly }) {
   // displayed in the UI
   products.forEach((product) => {
 
-    // If product does not exist and is not in stock, do not display it
+    // If filterText does not match a product or the product does not exist and is not in stock, do not display it
     if (
       product.name.toLowerCase().indexOf(
         filterText.toLowerCase()
@@ -61,6 +61,11 @@ function ProductTable({ products, filterText, inStockOnly }) {
       return;
     }
 
+    /* 
+      If product does exist and is stocked
+      Add the new category if it's different than the last one
+      Then convert each product into a component and push into the rows array
+    */
     if (product.category !== lastCategory) {
       rows.push(
         <ProductCategoryRow
@@ -68,11 +73,13 @@ function ProductTable({ products, filterText, inStockOnly }) {
           key={product.category} />
       );
     }
+
     rows.push(
       <ProductRow
         product={product}
         key={product.name} />
     );
+
     lastCategory = product.category;
   });
 
